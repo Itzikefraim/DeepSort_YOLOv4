@@ -199,7 +199,15 @@ def main(_argv):
         # Call the tracker
         tracker.predict()
         tracker.update(detections)
-
+        
+        # file name for txt files
+        filename = 'f' + str(xi) + '.txt'
+        filename = './data/detections/' + filename
+        
+        # txt file for tracks 
+        output = open(filename, 'w')
+        output.write('Bounding boxes\n')
+        
         # update tracks
         for track in tracker.tracks:
             if not track.is_confirmed() or track.time_since_update > 1:
@@ -213,6 +221,9 @@ def main(_argv):
             cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), color, 2)
             cv2.rectangle(frame, (int(bbox[0]), int(bbox[1]-30)), (int(bbox[0])+(len(class_name)+len(str(track.track_id)))*17, int(bbox[1])), color, -1)
             cv2.putText(frame, class_name + "-" + str(track.track_id),(int(bbox[0]), int(bbox[1]-10)),0, 0.75, (255,255,255),2)
+            
+            # bounding box coordinates 
+            output.write('\n ' + str(int(track.to_tlwh()[0])) + ' ' + str(int(track.to_tlwh()[1])) + ' ' + str(int(track.to_tlwh()[2])) + ' ' + str(int(track.to_tlwh()[3])))
 
         # if enable info flag then print details about each track
             if FLAGS.info:
