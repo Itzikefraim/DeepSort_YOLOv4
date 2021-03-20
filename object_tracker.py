@@ -201,7 +201,7 @@ def main(_argv):
         tracker.update(detections)
         
         # file name for txt files
-        filename = 'f' + str(xi) + '.txt'
+        filename = 'f' + str(frame_num) + '.txt'
         filename = './data/detections/' + filename
         
         # txt file for tracks 
